@@ -7,7 +7,7 @@ type JSONResponse = {
 
 export const getCompanies = async () => {
   const response = await fetch(
-    `${import.meta.env.VITE_REPORT_DATA_ENDPOINT}/companyReport/list`,
+    `http://localhost:7860/companyReport/list`,
     {
       method: "POST",
     }

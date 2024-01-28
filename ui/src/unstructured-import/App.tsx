@@ -24,7 +24,7 @@ function App() {
   const [needsApiKey, setNeedsApiKey] = useState(true);
   const [useSchema, setUseSchema] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<ImportResult | null>(null);
+  const [result, setResult] = useState<any>(null);
   const [schema, setSchema] = useState<string>("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [apiKey, setApiKey] = useState(loadKeyFromStorage() || "");
@@ -174,9 +174,8 @@ function App() {
 
             <input type="file" className={`w-full max-w-xs file-input`} />
             <button
-              className={`ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong ${
-                loading ? "ndl-loading" : ""
-              }`}
+              className={`ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong ${loading ? "ndl-loading" : ""
+                }`}
               onClick={handleImport}
               disabled={!initDone}
             >
@@ -194,9 +193,15 @@ function App() {
                 </p>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
-                  onClick={() => saveCypherResult(result)}
+                  onClick={() => saveCypherResult(result.data)}
                 >
                   Save as Cypher
+                </button>
+                <button
+                  className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
+                  onClick={() => saveCypherResult(result.nodis)}
+                >
+                  Save as Cypher no dis
                 </button>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"

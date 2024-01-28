@@ -4,7 +4,7 @@ function createNodeStatement(node: NodeType) {
   const properties = Object.entries(node.properties);
   const propertiesStrings: string[] = [];
   propertiesStrings.push(
-    `import_name: '${node.name.toString().replaceAll("'", "\\'")}'`
+    `import_name: '${node.name ? node.name.toString().replaceAll("'", "\\'") : 'default_string'}'`
   );
 
   properties.forEach((property) => {
@@ -15,7 +15,7 @@ function createNodeStatement(node: NodeType) {
     }
     console.log(propertyKey, propertyValue);
     propertiesStrings.push(
-      `\`${propertyKey}\`: '${propertyValue.toString().replaceAll("'", "\\'")}'`
+      `\`${propertyKey}\`: '${propertyValue ? propertyValue.toString().replaceAll("'", "\\'") : 'default_string'}'`
     );
   });
   return `CREATE (:\`${node.label}\` {${propertiesStrings.join(", ")}  })`;
@@ -33,17 +33,17 @@ function createRelationshipStatement(relationship: RelationshipType) {
     }
 
     propertiesStrings.push(
-      `\`${propertyKey}\`: '${propertyValue.toString().replaceAll("'", "\\'")}'`
+      `\`${propertyKey}\`: '${propertyValue ? propertyValue.toString().replaceAll("'", "\\'") : 'default_string'}'`
     );
   });
   //TODO: Make into single statement
-  return `MATCH (source { import_name: '${relationship.start
+  return `MATCH (source { import_name: '${relationship.start ? relationship.start
     .toString()
-    .replaceAll("'", "\\'")}' }), (target { import_name: '${relationship.end
+    .replaceAll("'", "\\'") : "default_string"}' }), (target { import_name: '${relationship.end ? relationship.end
     .toString()
-    .replaceAll("'", "\\'")}' }) CREATE (source)-[:\`${relationship.type
+    .replaceAll("'", "\\'") : "default_string"}' }) CREATE (source)-[:\`${relationship.type ? relationship.type
     .toString()
-    .replaceAll("'", "\\'")}\` {${propertiesStrings.join(", ")}}]->(target);`;
+    .replaceAll("'", "\\'") : "default_string"}\` {${propertiesStrings.join(", ")}}]->(target);`;
 }
 
 export const dataToCypher = (data: {

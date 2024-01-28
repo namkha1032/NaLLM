@@ -34,15 +34,15 @@ const chatMessageObjects: ChatMessageObject[] = SEND_REQUESTS
     ];
 
 const URI =
-  import.meta.env.VITE_KG_CHAT_BACKEND_ENDPOINT ??
+  "ws://localhost:7860/text2text" ??
   "ws://localhost:7860/text2text";
 
 const HAS_API_KEY_URI =
-  import.meta.env.VITE_HAS_API_KEY_ENDPOINT ??
+  "http://localhost:7860/hasapikey" ??
   "http://localhost:7860/hasapikey";
 
 const QUESTIONS_URI =
-  import.meta.env.VITE_KG_CHAT_SAMPLE_QUESTIONS_ENDPOINT ??
+  "http://localhost:7860/questionProposalsForCurrentDb" ??
   "http://localhost:7860/questionProposalsForCurrentDb";
 
 function loadKeyFromStorage() {

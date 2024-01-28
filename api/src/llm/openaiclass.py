@@ -3,11 +3,12 @@ from typing import (
     List,
 )
 
-import openai
+from openai import OpenAI
 import tiktoken
 from llm.basellm import BaseLLM
 from retry import retry
 
+client = OpenAI()
 
 class OpenAIChat(BaseLLM):
     """Wrapper around OpenAI Chat large language models."""
@@ -15,11 +16,11 @@ class OpenAIChat(BaseLLM):
     def __init__(
         self,
         openai_api_key: str,
-        model_name: str = "gpt-3.5-turbo",
+        model_name: str = "gpt-3.5-turbo-1106",
         max_tokens: int = 1000,
         temperature: float = 0.0,
     ) -> None:
-        openai.api_key = openai_api_key
+        client.api_key = openai_api_key
         self.model = model_name
         self.max_tokens = max_tokens
         self.temperature = temperature
@@ -30,18 +31,18 @@ class OpenAIChat(BaseLLM):
         messages: List[str],
     ) -> str:
         try:
-            completions = openai.ChatCompletion.create(
-                model=self.model,
+            completions = client.chat.completions.create(
+                model="gpt-3.5-turbo-1106",
                 temperature=self.temperature,
-                max_tokens=self.max_tokens,
+                # max_tokens=self.max_tokens,
                 messages=messages,
             )
             return completions.choices[0].message.content
         # catch context length / do not retry
-        except openai.error.InvalidRequestError as e:
+        except client.error.InvalidRequestError as e:
             return str(f"Error: {e}")
         # catch authorization errors / do not retry
-        except openai.error.AuthenticationError as e:
+        except client.error.AuthenticationError as e:
             return "Error: The provided OpenAI API key is invalid"
         except Exception as e:
             print(f"Retrying LLM call {e}")
@@ -53,7 +54,7 @@ class OpenAIChat(BaseLLM):
         onTokenCallback=Callable[[str], None],
     ) -> str:
         result = []
-        completions = openai.ChatCompletion.create(
+        completions = client.ChatCompletion.create(
             model=self.model,
             temperature=self.temperature,
             max_tokens=self.max_tokens,
@@ -76,4 +77,4 @@ class OpenAIChat(BaseLLM):
 
     def max_allowed_token_length(self) -> int:
         # TODO: list all models and their max tokens from api
-        return 2049
+        return 16385

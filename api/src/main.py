@@ -17,7 +17,7 @@ from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fewshot_examples import get_fewshot_examples
-from llm.openai import OpenAIChat
+from llm.openaiclass import OpenAIChat
 from pydantic import BaseModel
 
 
@@ -192,6 +192,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @app.post("/data2cypher")
 async def root(payload: ImportPayload):
+    print("get in path")
     """
     Takes an input and created a Cypher query
     """
@@ -206,7 +207,7 @@ async def root(payload: ImportPayload):
         result = ""
 
         llm = OpenAIChat(
-            openai_api_key=api_key, model_name="gpt-3.5-turbo-16k", max_tokens=4000
+            openai_api_key=api_key, model_name="gpt-3.5-turbo-1106", max_tokens=4000
         )
 
         if not payload.neo4j_schema:
@@ -223,7 +224,7 @@ async def root(payload: ImportPayload):
 
         print("Disambiguation result " + str(disambiguation_result))
 
-        return {"data": disambiguation_result}
+        return {"data": disambiguation_result, "nodis": result}
 
     except Exception as e:
         print(e)

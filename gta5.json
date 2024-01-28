@@ -1,0 +1,325 @@
+{
+    "nodes": [
+        {
+            "name": "'Michael'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Trevor'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Franklin'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Devin Weston'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Harold Stretch Joseph'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Wei Cheng'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Dave'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Steve Haines'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Lester'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Brad'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'Ludendorff'",
+            "label": "'City'",
+            "properties": {}
+        },
+        {
+            "name": "'The Lost outlaw motorcycle club'",
+            "label": "'Company'",
+            "properties": {}
+        },
+        {
+            "name": "'Latino street gangs'",
+            "label": "'Company'",
+            "properties": {}
+        },
+        {
+            "name": "'Merryweather'",
+            "label": "'Company'",
+            "properties": {}
+        },
+        {
+            "name": "'Union Depository'",
+            "label": "'Company'",
+            "properties": {}
+        },
+        {
+            "name": "'FIB'",
+            "label": "'Company'",
+            "properties": {}
+        },
+        {
+            "name": "'IAA'",
+            "label": "'Company'",
+            "properties": {}
+        },
+        {
+            "name": "['Game'",
+            "label": "'Game'",
+            "properties": {}
+        },
+        {
+            "name": "Michael De Santa",
+            "label": "Character",
+            "properties": {
+                "actor": "Ned Luke",
+                "occupation": "retired bank robber"
+            }
+        },
+        {
+            "name": "Franklin Clinton",
+            "label": "Character",
+            "properties": {
+                "actor": "Shawn Fonteno",
+                "occupation": "street gangster"
+            }
+        },
+        {
+            "name": "Trevor Philips",
+            "label": "Character",
+            "properties": {
+                "actor": "Steven Ogg",
+                "occupation": "drug dealer and gunrunner"
+            }
+        },
+        {
+            "name": "Los Santos",
+            "label": "City",
+            "properties": {
+                "based_on": "Los Angeles"
+            }
+        },
+        {
+            "name": "Rockstar Games",
+            "label": "Company",
+            "properties": {
+                "location": null
+            }
+        },
+        {
+            "name": "[Grand Theft Auto V",
+            "label": "Game",
+            "properties": {
+                "release_year": 2013,
+                "developer": "Rockstar North",
+                "publisher": "Rockstar Games"
+            }
+        },
+        {
+            "name": "Red Dead Redemption",
+            "label": "Game",
+            "properties": {
+                "release_year": null,
+                "developer": null,
+                "publisher": null
+            }
+        },
+        {
+            "name": "Max Payne 3",
+            "label": "Game",
+            "properties": {
+                "release_year": null,
+                "developer": null,
+                "publisher": null
+            }
+        },
+        {
+            "name": "Grand Theft Auto IV",
+            "label": "Game",
+            "properties": {
+                "release_year": 2008,
+                "developer": null,
+                "publisher": null
+            }
+        },
+        {
+            "name": "Grand Theft Auto VI",
+            "label": "Game",
+            "properties": {
+                "release_year": 2025,
+                "developer": null,
+                "publisher": null
+            }
+        },
+        {
+            "name": "San Andreas",
+            "label": "State",
+            "properties": {
+                "based_on": "Southern California"
+            }
+        },
+        {
+            "name": "Rockstar North",
+            "label": "Studio",
+            "properties": {
+                "location": null
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "start": "Michael De Santa",
+            "end": "Grand Theft Auto V",
+            "type": "protagonist_of",
+            "properties": {}
+        },
+        {
+            "start": "Franklin Clinton",
+            "end": "Grand Theft Auto V",
+            "type": "protagonist_of",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Grand Theft Auto V",
+            "type": "protagonist_of",
+            "properties": {}
+        },
+        {
+            "start": "Michael De Santa",
+            "end": "Franklin Clinton",
+            "type": "friend_of",
+            "properties": {}
+        },
+        {
+            "start": "Michael De Santa",
+            "end": "Devin Weston",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Michael De Santa",
+            "end": "Dave",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Michael De Santa",
+            "end": "Steve Haines",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Franklin Clinton",
+            "end": "corrupt car salesman",
+            "type": "works_for",
+            "properties": {}
+        },
+        {
+            "start": "Franklin Clinton",
+            "end": "Michael De Santa",
+            "type": "accomplice_of",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Los Santos",
+            "type": "lives_in",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Michael De Santa",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Devin Weston",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Dave",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Steve Haines",
+            "type": "enemies_with",
+            "properties": {}
+        },
+        {
+            "start": "Rockstar North",
+            "end": "null",
+            "type": "located_in",
+            "properties": {}
+        },
+        {
+            "start": "Rockstar Games",
+            "end": "null",
+            "type": "located_in",
+            "properties": {}
+        },
+        {
+            "start": "San Andreas",
+            "end": "Southern California",
+            "type": "based_on",
+            "properties": {}
+        },
+        {
+            "start": "Michael De Santa",
+            "end": "Ned Luke",
+            "type": "played_by",
+            "properties": {}
+        },
+        {
+            "start": "Franklin Clinton",
+            "end": "Shawn Fonteno",
+            "type": "played_by",
+            "properties": {}
+        },
+        {
+            "start": "Trevor Philips",
+            "end": "Steven Ogg",
+            "type": "played_by",
+            "properties": {}
+        },
+        {
+            "start": "Los Santos",
+            "end": "Los Angeles",
+            "type": "based_on",
+            "properties": {}
+        },
+        {
+            "start": "Grand Theft Auto V",
+            "end": "Grand Theft Auto VI",
+            "type": "predecessor_of",
+            "properties": {}
+        }
+    ]
+}

@@ -1,0 +1,226 @@
+{
+    "nodes": [
+        {
+            "name": "'Character'",
+            "label": "'Character'",
+            "properties": {}
+        },
+        {
+            "name": "'City'",
+            "label": "'City'",
+            "properties": {}
+        },
+        {
+            "name": "['Game'",
+            "label": "'Game'",
+            "properties": {}
+        },
+        {
+            "name": "Carl Johnson",
+            "label": "Character",
+            "properties": {
+                "name": "Carl Johnson"
+            }
+        },
+        {
+            "name": "Frank Tenpenny",
+            "label": "Character",
+            "properties": {
+                "name": "Frank Tenpenny",
+                "actor": "Samuel L. Jackson"
+            }
+        },
+        {
+            "name": "Sweet",
+            "label": "Character",
+            "properties": {
+                "name": "Sweet",
+                "actor": "Faizon Love"
+            }
+        },
+        {
+            "name": "Kendl",
+            "label": "Character",
+            "properties": {
+                "name": "Kendl",
+                "actor": "Yolanda Whittaker"
+            }
+        },
+        {
+            "name": "Big Smoke",
+            "label": "Character",
+            "properties": {
+                "name": "Big Smoke",
+                "actor": "Clifton Powell"
+            }
+        },
+        {
+            "name": "Ryder",
+            "label": "Character",
+            "properties": {
+                "name": "Ryder",
+                "actor": "MC Eiht"
+            }
+        },
+        {
+            "name": "Cesar Vialpando",
+            "label": "Character",
+            "properties": {
+                "name": "Cesar Vialpando",
+                "actor": "Clifton Collins Jr."
+            }
+        },
+        {
+            "name": "The Truth",
+            "label": "Character",
+            "properties": {
+                "name": "The Truth",
+                "actor": "Peter Fonda"
+            }
+        },
+        {
+            "name": "Wu Zi Mu",
+            "label": "Character",
+            "properties": {
+                "name": "Wu Zi Mu",
+                "actor": "James Yaegashi"
+            }
+        },
+        {
+            "name": "Mike Toreno",
+            "label": "Character",
+            "properties": {
+                "name": "Mike Toreno",
+                "actor": "James Woods"
+            }
+        },
+        {
+            "name": "Los Santos",
+            "label": "City",
+            "properties": {
+                "location": "California"
+            }
+        },
+        {
+            "name": "San Fierro",
+            "label": "City",
+            "properties": {
+                "location": "San Francisco"
+            }
+        },
+        {
+            "name": "Las Venturas",
+            "label": "City",
+            "properties": {
+                "location": "Las Vegas"
+            }
+        },
+        {
+            "name": "[Grand Theft Auto: San Andreas",
+            "label": "Game",
+            "properties": {
+                "year": 2004,
+                "developer": "Rockstar North",
+                "publisher": "Rockstar Games"
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "start": "Carl Johnson",
+            "end": "Sweet",
+            "type": "is friend of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Sweet",
+            "type": "is brother of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Kendl",
+            "type": "is brother of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Grove Street Families",
+            "type": "is member of gang",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Cesar Vialpando",
+            "type": "is ally of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "The Truth",
+            "type": "is ally of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Wu Zi Mu",
+            "type": "is ally of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Frank Tenpenny",
+            "type": "is enemy of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Big Smoke",
+            "type": "is enemy of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Ryder",
+            "type": "is enemy of",
+            "properties": {}
+        },
+        {
+            "start": "Carl Johnson",
+            "end": "Mike Toreno",
+            "type": "is enemy of",
+            "properties": {}
+        },
+        {
+            "start": "'Character'",
+            "end": "'Character'",
+            "type": "'performs action'",
+            "properties": {}
+        },
+        {
+            "start": "'Character'",
+            "end": "'Character'",
+            "type": "'follows'",
+            "properties": {}
+        },
+        {
+            "start": "'Character'",
+            "end": "'Character'",
+            "type": "'watches'",
+            "properties": {}
+        },
+        {
+            "start": "'Character'",
+            "end": "'City'",
+            "type": "'celebrates at'",
+            "properties": {}
+        },
+        {
+            "start": "'Character'",
+            "end": "'City'",
+            "type": "'checks on'",
+            "properties": {}
+        }
+    ]
+}
