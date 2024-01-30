@@ -33,7 +33,7 @@ class OpenAIChat(BaseLLM):
         try:
             completions = client.chat.completions.create(
                 model="gpt-3.5-turbo-1106",
-                temperature=self.temperature,
+                temperature=0,
                 # max_tokens=self.max_tokens,
                 messages=messages,
             )

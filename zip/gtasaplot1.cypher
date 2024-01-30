@@ -44,7 +44,7 @@ CREATE (:`Person` {import_name: 'CJ'  })
 CREATE (:`Person` {import_name: 'Smoke'  })
 CREATE (:`Person` {import_name: 'Ryder'  })
 CREATE (:`Gang` {import_name: 'Grove Street'  })
-CREATE (:`Person` {import_name: 'CJ'  })
+CREATE (:`Person` {import_name: '[CJ'  })
 CREATE (:`Person` {import_name: 'Emmet'  })
 CREATE (:`Person` {import_name: 'Ryder'  })
 CREATE (:`Person` {import_name: 'Big Smoke'  })
@@ -69,7 +69,7 @@ CREATE (:`Person` {import_name: 'Big Smoke'  })
 CREATE (:`Person` {import_name: 'Ryder'  })
 CREATE (:`Gang` {import_name: 'Grove Street'  })
 CREATE (:`Gang` {import_name: 'Ballas'  })
-CREATE (:`Person` {import_name: 'Sweet'  })
+CREATE (:`Person` {import_name: '[Sweet'  })
 CREATE (:`Person` {import_name: 'CJ'  })
 CREATE (:`Gang` {import_name: 'Ballas'  })
 CREATE (:`Person` {import_name: 'Cesar'  })
@@ -286,7 +286,7 @@ MATCH (source { import_name: 'Frank Tenpenny' }), (target { import_name: 'LSPD' 
 MATCH (source { import_name: 'Eddie Pulaski' }), (target { import_name: 'LSPD' }) CREATE (source)-[:`corrupt_officer_in` {}]->(target);
 MATCH (source { import_name: 'Jimmy Hernandez' }), (target { import_name: 'LSPD' }) CREATE (source)-[:`corrupt_officer_in` {}]->(target);
 MATCH (source { import_name: 'Ballas' }), (target { import_name: 'Grove Street Families' }) CREATE (source)-[:`rival_of` {}]->(target);
-MATCH (source { import_name: 'CJ' }), (target { import_name: 'Emmet' }) CREATE (source)-[:`buys weapons from` {}]->(target);
+MATCH (source { import_name: '[CJ' }), (target { import_name: 'Emmet' }) CREATE (source)-[:`buys weapons from` {}]->(target);
 MATCH (source { import_name: 'CJ' }), (target { import_name: 'Ballas' }) CREATE (source)-[:`performs drive-bys in` {}]->(target);
 MATCH (source { import_name: 'CJ' }), (target { import_name: 'Ryder' }) CREATE (source)-[:`steals weapons for` {}]->(target);
 MATCH (source { import_name: 'CJ' }), (target { import_name: 'Big Smoke' }) CREATE (source)-[:`accompanies on deals` {}]->(target);
@@ -309,7 +309,7 @@ MATCH (source { import_name: 'Big Smoke' }), (target { import_name: 'Sweet' }) C
 MATCH (source { import_name: 'Ryder' }), (target { import_name: 'Sweet' }) CREATE (source)-[:`helps` {}]->(target);
 MATCH (source { import_name: 'meeting' }), (target { import_name: 'police' }) CREATE (source)-[:`is ambushed by` {}]->(target);
 MATCH (source { import_name: 'group' }), (target { import_name: 'ambush' }) CREATE (source)-[:`manage to escape` {}]->(target);
-MATCH (source { import_name: 'Sweet' }), (target { import_name: 'Grove Street' }) CREATE (source)-[:`leader_of` {}]->(target);
+MATCH (source { import_name: '[Sweet' }), (target { import_name: 'Grove Street' }) CREATE (source)-[:`leader_of` {}]->(target);
 MATCH (source { import_name: 'Grove Street' }), (target { import_name: 'Los Santos' }) CREATE (source)-[:`control_of` {}]->(target);
 MATCH (source { import_name: 'Grove Street' }), (target { import_name: 'Ballas' }) CREATE (source)-[:`ambush` {`location`: 'Mulholland Intersection'}]->(target);
 MATCH (source { import_name: 'CJ' }), (target { import_name: 'Sweet' }) CREATE (source)-[:`brother_of` {}]->(target);

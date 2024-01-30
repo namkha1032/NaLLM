@@ -29,9 +29,8 @@ def generate_system_message() -> str:
     return """
 You are a data scientist working for a company that is building a graph database. Your task is to extract information from data and convert it into a graph database.
 Provide a set of Nodes in the form [ENTITY_ID, TYPE, PROPERTIES] and a set of relationships in the form [ENTITY_ID_1, RELATIONSHIP, ENTITY_ID_2, PROPERTIES].
-It is important that the ENTITY_ID_1 and ENTITY_ID_2 exists as nodes with a matching ENTITY_ID. If you can't pair a relationship with a pair of nodes don't add it.
-When you find a node or relationship you want to add try to create a generic TYPE for it that  describes the entity you can also think of it as a label. 
-Create the database as large as possible, as long as it contains all the information from the data.
+When you find a node you want to add, try to create a generic TYPE for it that describes the entity. You can also think of TYPE as a label.
+It is important that the ENTITY_ID_1 and ENTITY_ID_2 exists as nodes with a matching ENTITY_ID. Try to create relationships for every node in the graph.
 
 Example:
 Data: Alice lawyer and is 25 years old and Bob is her roommate since 2001. Bob works as a journalist. Alice owns a the webpage www.alice.com and Bob owns the webpage www.bob.com.
@@ -43,16 +42,15 @@ Relationships: ["alice", "roommate", "bob", {"start": 2021}], ["alice", "owns", 
 def generate_system_message_with_labels() -> str:
     return """
 You are a data scientist working for a company that is building a graph database. Your task is to extract information from data and convert it into a graph database.
-Provide a set of Nodes in the form [ENTITY_ID, TYPE, PROPERTIES] and a set of relationships in the form [ENTITY_ID_1, RELATIONSHIP, ENTITY_ID_2, PROPERTIES].
+Provide a set of nodes in the form [ENTITY_ID, TYPE, PROPERTIES] and a set of relationships in the form [ENTITY_ID_1, RELATIONSHIP, ENTITY_ID_2, PROPERTIES].
 It is important that the ENTITY_ID_1 and ENTITY_ID_2 exists as nodes with a matching ENTITY_ID. If you can't pair a relationship with a pair of nodes don't add it.
-When you find a node or relationship you want to add try to create a generic TYPE for it that  describes the entity you can also think of it as a label.
-You will be given a list of types that you should try to use when creating the TYPE for a node. If you can't find a type that fits the node you can create a new one.
+When you find a node or relationship you want to add try to create a generic TYPE for it that describes the entity you can also think of it as a label.
+You will be given a list of types that you should try to use when creating the TYPE for a node. If the list of types is empty or you can't find a type that fits the node, you can create a new one.
+The data will be in Vietnamese, so make sure the nodes and relationships extracted from the data will also be in Vietnamese.
 
-Example user input:
+Example:
 Data: Alice lawyer and is 25 years old and Bob is her roommate since 2001. Bob works as a journalist. Alice owns a the webpage www.alice.com and Bob owns the webpage www.bob.com.
 Types: ["Person", "Webpage"]
-
-Example output:
 Nodes: ["alice", "Person", {"age": 25, "occupation": "lawyer", "name":"Alice"}], ["bob", "Person", {"occupation": "journalist", "name": "Bob"}], ["alice.com", "Webpage", {"url": "www.alice.com"}], ["bob.com", "Webpage", {"url": "www.bob.com"}]
 Relationships: ["alice", "roommate", "bob", {"start": 2021}], ["alice", "owns", "alice.com", {}], ["bob", "owns", "bob.com", {}]
 """
@@ -82,34 +80,37 @@ def splitString(string, max_length) -> List[str]:
 def splitStringToFitTokenSpace(
     llm: BaseLLM, string: str, token_use_per_string: int
 ) -> List[str]:
-    allowed_tokens = llm.max_allowed_token_length() - token_use_per_string
-    chunked_data = splitString(string, 500)
+    allowed_tokens = 1000
+    chunked_data = string.splitlines()
     combined_chunks = []
     current_chunk = ""
-    # for chunk in chunked_data:
-    #     if (
-    #         llm.num_tokens_from_string(current_chunk)
-    #         + llm.num_tokens_from_string(chunk)
-    #         < allowed_tokens
-    #     ):
-    #         current_chunk += chunk
-    #     else:
-    #         combined_chunks.append(current_chunk)
-    #         current_chunk = chunk
-    # combined_chunks.append(current_chunk)
+    for chunk in chunked_data:
+        if (
+            llm.num_tokens_from_string(current_chunk)
+            + llm.num_tokens_from_string(chunk)
+            < allowed_tokens
+        ):
+            current_chunk += chunk
+        else:
+            combined_chunks.append(current_chunk)
+            current_chunk = chunk
+    combined_chunks.append(current_chunk)
 
-    # return combined_chunks
-    return chunked_data
+    return combined_chunks
+    # return chunked_data
 
 
 def getNodesAndRelationshipsFromResult(result):
+    print("result is: ", result)
     regex = "Nodes:\s+(.*?)\s?\s?Relationships:\s?\s?(.*)"
     internalRegex = "\[(.*?)\]"
     nodes = []
     relationships = []
     for row in result:
+        print("row is: ", row)
         parsing = re.match(regex, row, flags=re.S)
         if parsing == None:
+            print("WARNING: parsing is none")
             continue
         rawNodes = str(parsing.group(1))
         rawRelationships = parsing.group(2)
@@ -143,15 +144,14 @@ class DataExtractor(BaseComponent):
 
     def process_with_labels(self, chunk, labels):
         messages = [
-            {"role": "system", "content": generate_system_message_with_schema()},
+            {"role": "system", "content": generate_system_message_with_labels()},
             {"role": "user", "content": generate_prompt_with_labels(chunk, labels)},
         ]
-        print(messages)
+        print("Message is: ", messages)
         output = self.llm.generate(messages)
         return output
 
     def run(self, data: str) -> List[str]:
-        print("get in data extractor run")
         system_message = generate_system_message()
         # prompt_string = generate_prompt("")
         prompt_string = generate_prompt_with_labels(data, "")
@@ -161,19 +161,29 @@ class DataExtractor(BaseComponent):
         results = []
         labels = set()
         
+        my_result = dict()
+        my_result["nodes"] = []
+        my_result["relationships"] = []
         print("Starting chunked processing")
         chunked_data = splitStringToFitTokenSpace(
             llm=self.llm, string=data, token_use_per_string=token_usage_per_prompt
         )
-        for chunk in chunked_data:
-            proceededChunk = self.process_with_labels(chunk, list(labels))
-            print("proceededChunk", proceededChunk)
+        for index, chunk in enumerate(chunked_data):
+            print(f"About to LLM chunk: {index}/{len(chunked_data)}")
+            proceededChunk = self.process(chunk)
+            print("proceededChunk: ", proceededChunk)
             chunkResult = getNodesAndRelationshipsFromResult([proceededChunk])
-            print("chunkResult", chunkResult)
+            print("chunkResult: ", chunkResult)
             newLabels = [node["label"] for node in chunkResult["nodes"]]
-            print("newLabels", newLabels)
+            print("newLabels: ", newLabels)
             results.append(proceededChunk)
             labels.update(newLabels)
+            my_result["nodes"].extend(chunkResult["nodes"])
+            my_result["relationships"].extend(chunkResult["relationships"])
+            print("my_result after update: ", my_result)
+            print("my_result after update str: ", str(my_result))
+            print("results after update: ", results)
+            print("labels after update: ", labels)
             
         # chunk = data
         # # proceededChunk = self.process_with_labels(chunk, list(labels))
@@ -185,9 +195,15 @@ class DataExtractor(BaseComponent):
         # print("newLabels", newLabels)
         # results.append(proceededChunk)
         # labels.update(newLabels)
-        print("before last proceed: ", results)
-        print("before last proceed str: ", str(results))
-        return getNodesAndRelationshipsFromResult(results)
+        print("results before last proceed: ", results)
+        print("results before last proceed str: ", str(results))
+        print("my_result before last proceed: ", my_result)
+        print("my_result before last proceed str: ", str(my_result))
+        final_result = dict()
+        final_result["results"] = getNodesAndRelationshipsFromResult(results)
+        final_result["my_result"] = my_result
+        print("final result: ", final_result)
+        return final_result
 
 
 class DataExtractorWithSchema(BaseComponent):

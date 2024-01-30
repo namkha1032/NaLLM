@@ -18,7 +18,7 @@ function createNodeStatement(node: NodeType) {
       `\`${propertyKey}\`: '${propertyValue ? propertyValue.toString().replaceAll("'", "\\'") : 'default_string'}'`
     );
   });
-  return `CREATE (:\`${node.label}\` {${propertiesStrings.join(", ")}  })`;
+  return `MERGE (:\`${node.label}\` {${propertiesStrings.join(", ")}  })`;
 }
 
 // Function to generate a Cypher statement for creating a relationship
@@ -41,7 +41,7 @@ function createRelationshipStatement(relationship: RelationshipType) {
     .toString()
     .replaceAll("'", "\\'") : "default_string"}' }), (target { import_name: '${relationship.end ? relationship.end
     .toString()
-    .replaceAll("'", "\\'") : "default_string"}' }) CREATE (source)-[:\`${relationship.type ? relationship.type
+    .replaceAll("'", "\\'") : "default_string"}' }) MERGE (source)-[:\`${relationship.type ? relationship.type
     .toString()
     .replaceAll("'", "\\'") : "default_string"}\` {${propertiesStrings.join(", ")}}]->(target);`;
 }

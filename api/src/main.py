@@ -204,27 +204,26 @@ async def root(payload: ImportPayload):
     api_key = openai_api_key if openai_api_key else payload.api_key
 
     try:
-        result = ""
-
+        resultRaw = ""
         llm = OpenAIChat(
             openai_api_key=api_key, model_name="gpt-3.5-turbo-1106", max_tokens=4000
         )
 
         if not payload.neo4j_schema:
             extractor = DataExtractor(llm=llm)
-            result = extractor.run(data=payload.input)
+            resultRaw = extractor.run(data=payload.input)
         else:
             extractor = DataExtractorWithSchema(llm=llm)
-            result = extractor.run(schema=payload.neo4j_schema, data=payload.input)
+            resultRaw = extractor.run(schema=payload.neo4j_schema, data=payload.input)
 
-        print("Extracted result: " + str(result))
-
+        print("resultRaw: ", resultRaw)
+        print("Begin disambiguation...")
         disambiguation = DataDisambiguation(llm=llm)
-        disambiguation_result = disambiguation.run(result)
+        disambiguation_result = disambiguation.run(resultRaw["results"])
 
-        print("Disambiguation result " + str(disambiguation_result))
+        print("Disambiguation result: ", str(disambiguation_result))
 
-        return {"data": disambiguation_result, "nodis": result}
+        return {"data": disambiguation_result, "nodis": resultRaw["results"], "my_result": resultRaw["my_result"]}
 
     except Exception as e:
         print(e)

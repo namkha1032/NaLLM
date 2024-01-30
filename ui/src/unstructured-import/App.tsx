@@ -205,6 +205,12 @@ function App() {
                 </button>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
+                  onClick={() => saveCypherResult(result.my_result)}
+                >
+                  Save as Cypher my result
+                </button>
+                <button
+                  className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
                   onClick={() => saveImportResultAsNeo4jImport(result)}
                 >
                   Save as Neo4j Import format

@@ -11,6 +11,7 @@ def nodesTextToListOfDict(nodes):
     for node in nodes:
         nodeList = node.split(",")
         if len(nodeList) < 2:
+            print("WARNING: nodeList < 2")
             continue
 
         name = nodeList[0].strip().replace('"', "")
@@ -25,6 +26,8 @@ def nodesTextToListOfDict(nodes):
             properties = json.loads(properties)
         except:
             properties = {}
+        if name[0] == "[":
+            name = name[1:]
         result.append({"name": name, "label": label, "properties": properties})
     return result
 
@@ -49,6 +52,10 @@ def relationshipTextToListOfDict(relationships):
             properties = json.loads(properties)
         except:
             properties = {}
+        if start[0] == "[":
+            start = start[1:]
+        if end[0] == "[":
+            end = end[1:]
         result.append(
             {"start": start, "end": end, "type": type, "properties": properties}
         )
