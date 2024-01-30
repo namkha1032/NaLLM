@@ -16,26 +16,17 @@ export const runImport = async (input: string, schema?: string, apiKey?: string)
     // @ts-ignore
     body.api_key = apiKey;
   }
-  const response = await fetch(
-    `http://localhost:7860/data2cypher`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    }
-  );
   // const response = await fetch(
-  //   `http://localhost:4173/restest.json`,
+  //   `http://localhost:7860/data2cypher`,
   //   {
-  //     method: "GET",
+  //     method: "POST",
   //     headers: {
   //       "Content-Type": "application/json",
   //     },
-  //     // body: JSON.stringify(body),
+  //     body: JSON.stringify(body),
   //   }
   // );
+  const response = await fetch(`http://localhost:7860/test`)
   if (!response.ok) {
     return Promise.reject(
       new Error(`Failed to import: ${response.statusText}`)
