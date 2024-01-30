@@ -41,5 +41,4 @@ share/python-wheels/
 *.egg
 MANIFEST
 .vscode
-.env
 **/neo4j/data/
