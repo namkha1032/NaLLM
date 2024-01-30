@@ -61,6 +61,12 @@ def generate_prompt(data) -> str:
 Data: {data}"""
 
 
+def generate_prompt_gemini(data) -> str:
+    return f"""
+Here is the data that you have to extract information from:
+Data: {data}"""
+
+
 def generate_prompt_with_schema(data, schema) -> str:
     return f"""
 Schema: {schema}
@@ -80,7 +86,7 @@ def splitString(string, max_length) -> List[str]:
 def splitStringToFitTokenSpace(
     llm: BaseLLM, string: str, token_use_per_string: int
 ) -> List[str]:
-    allowed_tokens = 1000
+    allowed_tokens = 400
     chunked_data = string.splitlines()
     combined_chunks = []
     current_chunk = ""
@@ -101,13 +107,12 @@ def splitStringToFitTokenSpace(
 
 
 def getNodesAndRelationshipsFromResult(result):
-    print("result is: ", result)
     regex = "Nodes:\s+(.*?)\s?\s?Relationships:\s?\s?(.*)"
     internalRegex = "\[(.*?)\]"
     nodes = []
     relationships = []
     for row in result:
-        print("row is: ", row)
+        row = row.replace("**", "")
         parsing = re.match(regex, row, flags=re.S)
         if parsing == None:
             print("WARNING: parsing is none")
@@ -136,10 +141,10 @@ class DataExtractor(BaseComponent):
         print("get in process")
         messages = [
             {"role": "system", "content": generate_system_message()},
-            {"role": "user", "content": generate_prompt(chunk)},
+            {"role": "user", "content": generate_prompt_gemini(chunk)},
         ]
-        print(messages)
-        output = self.llm.generate(messages)
+        print("Message is: ", messages)
+        output = self.llm.generate_gemini(messages)
         return output
 
     def process_with_labels(self, chunk, labels):
@@ -158,7 +163,7 @@ class DataExtractor(BaseComponent):
         token_usage_per_prompt = self.llm.num_tokens_from_string(
             system_message + prompt_string
         )
-        results = []
+        neo_result = []
         labels = set()
         
         my_result = dict()
@@ -169,20 +174,18 @@ class DataExtractor(BaseComponent):
             llm=self.llm, string=data, token_use_per_string=token_usage_per_prompt
         )
         for index, chunk in enumerate(chunked_data):
-            print(f"About to LLM chunk: {index}/{len(chunked_data)}")
+            print(f"About to LLM chunk: {index+1}/{len(chunked_data)}")
             proceededChunk = self.process(chunk)
             print("proceededChunk: ", proceededChunk)
             chunkResult = getNodesAndRelationshipsFromResult([proceededChunk])
             print("chunkResult: ", chunkResult)
             newLabels = [node["label"] for node in chunkResult["nodes"]]
             print("newLabels: ", newLabels)
-            results.append(proceededChunk)
+            neo_result.append(proceededChunk)
             labels.update(newLabels)
             my_result["nodes"].extend(chunkResult["nodes"])
             my_result["relationships"].extend(chunkResult["relationships"])
-            print("my_result after update: ", my_result)
-            print("my_result after update str: ", str(my_result))
-            print("results after update: ", results)
+            print("neo_result after update: ", neo_result)
             print("labels after update: ", labels)
             
         # chunk = data
@@ -195,14 +198,14 @@ class DataExtractor(BaseComponent):
         # print("newLabels", newLabels)
         # results.append(proceededChunk)
         # labels.update(newLabels)
-        print("results before last proceed: ", results)
-        print("results before last proceed str: ", str(results))
-        print("my_result before last proceed: ", my_result)
-        print("my_result before last proceed str: ", str(my_result))
+        
         final_result = dict()
-        final_result["results"] = getNodesAndRelationshipsFromResult(results)
+        final_result["neo_result"] = getNodesAndRelationshipsFromResult(neo_result)
         final_result["my_result"] = my_result
-        print("final result: ", final_result)
+        print("neo result len node: ", len(final_result["neo_result"]["nodes"]))
+        print("neo result len rela: ", len(final_result["neo_result"]["relationships"]))
+        print("my result len node: ", len(final_result["my_result"]["nodes"]))
+        print("my result len rela: ", len(final_result["my_result"]["relationships"]))
         return final_result
 
 

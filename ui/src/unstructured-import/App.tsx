@@ -97,7 +97,6 @@ function App() {
           schemaJson,
           needsApiKey ? apiKey : undefined
         );
-        console.log("import result", importResult);
         if (importResult) {
           console.log(importResult);
           setResult(importResult);
@@ -193,9 +192,9 @@ function App() {
                 </p>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
-                  onClick={() => saveCypherResult(result.data)}
+                  onClick={() => saveCypherResult(result.dis)}
                 >
-                  Save as Cypher
+                  Save as Cypher dis
                 </button>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
@@ -205,9 +204,9 @@ function App() {
                 </button>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"
-                  onClick={() => saveCypherResult(result.my_result)}
+                  onClick={() => saveCypherResult(result.mydis)}
                 >
-                  Save as Cypher my result
+                  Save as Cypher my dis
                 </button>
                 <button
                   className="ndl-btn ndl-large ndl-filled ndl-primary n-bg-palette-primary-bg-strong"

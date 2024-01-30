@@ -79,7 +79,7 @@ class DataDisambiguation(BaseComponent):
                 {"role": "system", "content": generate_system_message_for_nodes()},
                 {"role": "user", "content": generate_prompt(disString)},
             ]
-            rawNodes = self.llm.generate(messages)
+            rawNodes = self.llm.generate_gemini(messages)
 
             n = re.findall(internalRegex, rawNodes)
 
@@ -109,7 +109,7 @@ class DataDisambiguation(BaseComponent):
             },
             {"role": "user", "content": generate_prompt(relationship_data)},
         ]
-        rawRelationships = self.llm.generate(messages)
+        rawRelationships = self.llm.generate_gemini(messages)
         rels = re.findall(internalRegex, rawRelationships)
         new_relationships.extend(relationshipTextToListOfDict(rels))
         return {"nodes": new_nodes, "relationships": new_relationships}

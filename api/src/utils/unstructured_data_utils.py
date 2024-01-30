@@ -1,5 +1,6 @@
 import json
 import re
+import copy
 
 regex = "Nodes:\s+(.*?)\s?\s?Relationships:\s+(.*)"
 internalRegex = "\[(.*?)\]"
@@ -60,3 +61,31 @@ def relationshipTextToListOfDict(relationships):
             {"start": start, "end": end, "type": type, "properties": properties}
         )
     return result
+
+def myDisambiguation(obj):
+    oriObj = copy.deepcopy(obj)
+    for index, node in enumerate(oriObj["nodes"]):
+        copyObj = copy.deepcopy(oriObj)
+        delCount = 0
+        for i in range(index+1, len(copyObj["nodes"])):
+            if node["name"].lower() == copyObj["nodes"][i]["name"].lower():
+                oriObj["nodes"][index]["properties"].update(copyObj["nodes"][i]["properties"])
+                upperOri = 0
+                upperCopy = 0
+                for c in node["name"]:
+                    if(c.isupper()):
+                        upperOri += 1
+                for c in copyObj["nodes"][i]["name"]:
+                    if(c.isupper()):
+                        upperCopy += 1
+                if(upperCopy > upperOri):
+                    oriObj["nodes"][index]["name"] = copyObj["nodes"][i]["name"]
+                oriObj["nodes"].pop(i - delCount)
+                delCount = delCount+1
+        for idx, rela in enumerate(oriObj["relationships"]):
+            if rela["start"].lower() == oriObj["nodes"][index]["name"].lower:
+                oriObj["relationships"][idx]["start"] = oriObj["nodes"][index]["name"]
+            if rela["end"].lower() == oriObj["nodes"][index]["name"].lower:
+                oriObj["relationships"][idx]["end"] = oriObj["nodes"][index]["name"]
+
+    return oriObj

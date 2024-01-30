@@ -7,8 +7,12 @@ from openai import OpenAI
 import tiktoken
 from llm.basellm import BaseLLM
 from retry import retry
+import google.generativeai as genai
 
 client = OpenAI()
+
+genai.configure(api_key="AIzaSyB6ixOT-4N-WgqhqUUC64o0DC5COZ5o5RQ")
+model_gemini = genai.GenerativeModel('gemini-pro')
 
 class OpenAIChat(BaseLLM):
     """Wrapper around OpenAI Chat large language models."""
@@ -47,7 +51,59 @@ class OpenAIChat(BaseLLM):
         except Exception as e:
             print(f"Retrying LLM call {e}")
             raise Exception()
-
+    def generate_gemini(self, messages):
+        generation_config = genai.types.GenerationConfig(
+                                                    max_output_tokens=4000,
+                                                    temperature=0.0)
+        safety_settings = [
+            {
+                "category": "HARM_CATEGORY_UNSPECIFIED",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_DEROGATORY",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_TOXICITY",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_VIOLENCE",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_SEXUAL",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_MEDICAL",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE",
+            }
+        ]
+        
+        response = model_gemini.generate_content(messages[0]["content"] + messages[1]["content"])
+        return response.text
     async def generateStreaming(
         self,
         messages: List[str],
